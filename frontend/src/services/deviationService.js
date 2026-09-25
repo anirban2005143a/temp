@@ -1,4 +1,6 @@
-import api from './api';
+import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const submitDeviationQuery = async ({ query, file, currentForm }) => {
   const formData = new FormData();
@@ -15,9 +17,9 @@ export const submitDeviationQuery = async ({ query, file, currentForm }) => {
     formData.append('current_form', JSON.stringify(currentForm));
   }
 
-  const response = await api.post('/api/submit-query', formData, {
+  const response = await axios.post(`${API_BASE_URL}/api/submit-query`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": 'multipart/form-data',
     },
   });
 

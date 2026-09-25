@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from lib.utils import is_pdf, is_docx, save_temp_file
@@ -13,18 +15,33 @@ process_query_router = APIRouter()
 async def upload_deviation(
     file: UploadFile | None = File(default=None),
     query: str | None = Form(default=None),
+    current_form: str | None = Form(default=None),
 ):
     temp_path = None
 
     try:
         query = (query or "").strip()
-        print("[API] /submit-query called | file_present=%s | query_len=%s" % (bool(file), len(query)))
+        current_form_data = None
 
-        if file is None and not query:
-            print("[API] validation failed: no file and no query")
+        if current_form:
+            try:
+                current_form_data = json.loads(current_form)
+            except json.JSONDecodeError as exc:
+                raise HTTPException(
+                    status_code=400,
+                    detail="current_form must be valid JSON.",
+                ) from exc
+
+        print(
+            "[API] /submit-query called | file_present=%s | query_len=%s | form_present=%s"
+            % (bool(file), len(query), bool(current_form_data))
+        )
+
+        if file is None and not query and not current_form_data:
+            print("[API] validation failed: no file, no query, and no current form")
             raise HTTPException(
                 status_code=400,
-                detail="Provide either an uploaded document or a query string.",
+                detail="Provide either an uploaded document, a query string, or the current form data.",
             )
 
         file_content = ""
@@ -58,10 +75,14 @@ async def upload_deviation(
                     detail="Unsupported file type. Upload PDF or DOCX only.",
                 )
 
-        print("[API] calling LLM module | query_len=%s | file_content_len=%s" % (len(query), len(file_content)))
+        print(
+            "[API] calling LLM module | query_len=%s | file_content_len=%s | current_form_present=%s"
+            % (len(query), len(file_content), bool(current_form_data))
+        )
         final_response = LLM_Module().invoke_structured_model(
             file_content=file_content,
             query=query,
+            current_form=current_form_data,
         )
 
         print("[API] AI response completed successfully")

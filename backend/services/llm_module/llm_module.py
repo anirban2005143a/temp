@@ -1,3 +1,4 @@
+import json
 import time
 
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
@@ -29,12 +30,20 @@ class LLM_Module:
         print("[LLM] simple invoke | query_len=%s" % len(str(query)))
         return self.model.invoke(input=query).content
 
-    def invoke_structured_model(self, file_content: str, query: str) -> DeviationFormData:
-        if not query and not file_content:
-            print("[LLM] validation failed | empty query and file content")
-            raise ValueError("Either query or file_content is required")
+    def invoke_structured_model(
+        self,
+        file_content: str,
+        query: str,
+        current_form: dict | None = None,
+    ) -> DeviationFormData:
+        if not query and not file_content and not current_form:
+            print("[LLM] validation failed | empty query, file content, and current form")
+            raise ValueError("Either query, file_content, or current_form is required")
 
-        print("[LLM] starting structured extraction | file_len=%s | query_len=%s" % (len(file_content), len(query)))
+        print(
+            "[LLM] starting structured extraction | file_len=%s | query_len=%s | form_present=%s"
+            % (len(file_content), len(query), bool(current_form))
+        )
         print("[LLM] sleep before model call | delay=%s sec" % settings.model_invoke_delay_sec)
         time.sleep(settings.model_invoke_delay_sec)
 
@@ -52,6 +61,11 @@ class LLM_Module:
         payload = {
             "file_content": file_content.strip() if file_content else "File is not given",
             "user_query": query.strip() if query else "Additional query is not provided",
+            "current_form": (
+                json.dumps(current_form, ensure_ascii=False, indent=2)
+                if current_form
+                else "No existing form data was provided."
+            ),
             "structured_instructions": parser.get_format_instructions(),
         }
 

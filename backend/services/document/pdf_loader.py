@@ -15,7 +15,7 @@ class PDFLoader(DocumentLoader):
 
         documents = loader.load()
         print("[PDF Loader] extracted blocks=%s" % len(documents))
-
+        
         content = "\n\n".join(document.page_content for document in documents)
         print("[PDF Loader] final content length=%s" % len(content))
         return content

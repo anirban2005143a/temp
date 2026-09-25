@@ -40,7 +40,7 @@ class LLM_Module:
 
         parser = PydanticOutputParser(pydantic_object=DeviationFormData)
 
-        fixing_parser = OutputFixingParser(
+        fixing_parser = OutputFixingParser.from_llm(
             parser=parser,
             llm=self.model,
             max_retries=2,

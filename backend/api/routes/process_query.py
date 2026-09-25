@@ -29,12 +29,8 @@ async def upload_deviation(
 
         file_content = ""
 
-        if file is not None:
+        if file is not None and file.filename:
             print("[API] file received | filename=%s" % file.filename)
-
-            if not file.filename:
-                print("[API] filename missing")
-                raise HTTPException(status_code=400, detail="No filename provided")
 
             content = await file.read()
             if not content:

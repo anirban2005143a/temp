@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import deviationReducer from './deviationSlice';
+import deviationSlice from './deviationSlice';
+import chatSlice from './chatSlide'
 
 export const store = configureStore({
   reducer: {
-    deviation: deviationReducer,
+    deviation: deviationSlice,
+    chat : chatSlice
   },
 });

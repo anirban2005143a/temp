@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const defaultForm = {
-  chat_response: '',
   product_name: '',
   batch_number: '',
   site: '',
@@ -17,9 +16,7 @@ const defaultForm = {
   severity_reason: '',
 };
 
-const initialState = {
-  form: defaultForm,
-};
+const initialState = { ...defaultForm };
 
 const deviationSlice = createSlice({
   name: 'deviation',
@@ -27,18 +24,25 @@ const deviationSlice = createSlice({
   reducers: {
     updateFormField: (state, action) => {
       const { field, value } = action.payload;
-      state.form[field] = value;
+      state[field] = value;
     },
     setForm: (state, action) => {
-      state.form = { ...defaultForm, ...(action.payload || {}) };
+      const incoming = action.payload || {};
+      const nextState = { ...state };
+
+      Object.keys(nextState).forEach((key) => {
+        if (incoming[key]) {
+          nextState[key] = incoming[key];
+        }
+      });
+
+      return nextState;
     },
-    mergeFormValues: (state, action) => {
-      const values = action.payload || {};
-      state.form = { ...state.form, ...values };
-    },
+    resetForm : (state, action)=>{
+      return initialState
+    }
   },
 });
 
-export const { updateFormField, setForm, mergeFormValues } = deviationSlice.actions;
+export const { updateFormField, setForm, resetForm } = deviationSlice.actions;
 export default deviationSlice.reducer;
-

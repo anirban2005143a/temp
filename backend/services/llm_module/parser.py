@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional, Literal
 from pydantic import BaseModel, Field
 
@@ -22,12 +23,12 @@ class DeviationFormData(BaseModel):
         )
     )
 
-    occurrence_date: Optional[str] = Field(
+    occurrence_date: Optional[date] = Field(
         default=None,
         description=(
             "Date on which the deviation occurred. "
-            "Preserve the date as supported by the source. "
-            "Do not invent or infer a date."
+            "Preserve the value as supported by the source. "
+            "Do not invent or infer a value. Use ISO format YYYY-MM-DD."
         )
     )
 

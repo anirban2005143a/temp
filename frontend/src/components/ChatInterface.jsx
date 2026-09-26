@@ -83,39 +83,10 @@ export const ChatInterface = () => {
     }
 
     try {
-      // const response = await submitDeviationQuery({
-      //   query: trimmedQuery,
-      //   file: tempSelectedFile,
-      //   currentForm: form,
-      // });
-
-      const response = {
-        chat_response: "form updated successfuly",
-        product_name: "Paracetamol 500mg Tablets",
-        batch_number: "",
-        site: "Manufacturing Site - Unit 1",
-        deviation_title: "Temperature Excursion During Storage",
-        deviation_type: "Environmental deviation",
-        description:
-          "The storage temperature exceeded the specified limit during routine monitoring. The temperature was recorded at 28°C for approximately 45 minutes against the specified range of 20°C to 25°C.",
-        affected_area: "Finished Goods Warehouse",
-        immediate_action:
-          "The affected materials were placed on hold and the temperature monitoring system was checked. Warehouse personnel were notified and the HVAC system was inspected.",
-        root_cause:
-          "Temporary malfunction of the HVAC control system resulted in inadequate temperature regulation.",
-        quality_impact:
-          "Potential impact on product quality due to exposure to temperatures above the specified storage conditions.",
-        impact_summary:
-          "A total of 120 cartons from batch PCM2026B001 were potentially affected. Quality assessment and stability data review are required before disposition.",
-        severity: "High",
-        severity_reason:
-          "The deviation may have a potential impact on product quality, but the exposure was limited in duration and the affected batch has been placed on hold pending investigation.",
-      };
-
-      await new Promise((res, rej) => {
-        setTimeout(() => {
-          res(5);
-        }, 5000);
+      const response = await submitDeviationQuery({
+        query: trimmedQuery,
+        file: tempSelectedFile,
+        currentForm: form,
       });
 
       const { chat_response, ...fordata } = response || {};
@@ -195,11 +166,11 @@ export const ChatInterface = () => {
                   ✦
                 </div>
 
-                <h3 className="text-sm font-semibold text-slate-800">
+                <h3 className="text-base font-semibold text-slate-800">
                   How can I help?
                 </h3>
 
-                <p className="mt-1.5 text-xs leading-5 text-slate-500">
+                <p className="mt-1.5 text-sm leading-5 text-slate-500">
                   Ask questions about the deviation, upload a document, or let
                   me help you complete the form.
                 </p>
@@ -224,7 +195,7 @@ export const ChatInterface = () => {
                   >
                     {/* Avatar */}
                     <div
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
                         isAssistant
                           ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
                           : "bg-blue-600 text-white shadow-sm"
@@ -292,7 +263,7 @@ export const ChatInterface = () => {
           {isResponseGenerating && (
             <div className="flex justify-start">
               <div className="flex max-w-[88%] items-end gap-2">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-blue-600 ring-1 ring-slate-200">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-blue-600 ring-1 ring-slate-200">
                   <Bot className="h-3.5 w-3.5" />
                 </div>
 
@@ -329,7 +300,7 @@ export const ChatInterface = () => {
             </div>
           ) : null}
 
-          <div className="flex items-end gap-2 rounded-lg border border-slate-200 bg-slate-50 p-1.5 shadow-sm transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
+          <div className="flex items-end gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1.5 shadow-sm transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
             <label
               className={`flex h-10 w-10 shrink-0  items-center justify-center rounded-lg text-slate-500 transition cursor-pointer hover:bg-slate-200 hover:text-slate-700`}
               aria-label="Add file"
@@ -351,7 +322,7 @@ export const ChatInterface = () => {
               onChange={handleQueryChange}
               onKeyDown={handleTextareaKeyDown}
               placeholder="Type a message ..."
-              className="max-h-40 min-h-[40px] flex-1 resize-none overflow-y-auto bg-transparent px-1 py-2 text-base leading-5 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50"
+              className="max-h-40 min-h-[40px] flex-1 resize-none overflow-y-auto bg-transparent py-2 text-base leading-5 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50"
             />
 
             <button

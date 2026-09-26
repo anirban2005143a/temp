@@ -1,9 +1,21 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from lib.config import settings
-from api.routes.process_query import process_query_router
 
-app = FastAPI(title=settings.app_name, version="1.0.0")
+from api.routes.deviation_routes import router as deviation_router
+from api.routes.process_query import process_query_router
+from database import create_db_and_tables
+from lib.config import settings
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db_and_tables()
+    yield
+
+
+app = FastAPI(title=settings.app_name, version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,6 +26,8 @@ app.add_middleware(
 )
 
 app.include_router(process_query_router, prefix="/api")
+app.include_router(deviation_router, prefix="/api/deviation")
+
 
 @app.get("/health")
 def root_health():

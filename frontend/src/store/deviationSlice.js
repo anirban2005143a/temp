@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const defaultForm = {
   chat_response: '',
   site: '',
-  occurrence_date: '',
+  occurrence_date: null,
   deviation_title: '',
   source: '',
   related_product_material: '',
@@ -14,7 +14,10 @@ const defaultForm = {
   suggested_next_step: '',
 };
 
-const initialState = { ...defaultForm };
+const initialState = {
+  ...defaultForm,
+  formStatus: 'draft',
+};
 
 const deviationSlice = createSlice({
   name: 'deviation',
@@ -23,24 +26,28 @@ const deviationSlice = createSlice({
     updateFormField: (state, action) => {
       const { field, value } = action.payload;
       state[field] = value;
+      state.formStatus = 'draft';
     },
     setForm: (state, action) => {
       const incoming = action.payload || {};
-      const nextState = { ...state };
 
-      Object.keys(nextState).forEach((key) => {
-        if (incoming[key]) {
-          nextState[key] = incoming[key];
-        }
+      Object.keys(defaultForm).forEach((key) => {
+        if(incoming[key]) 
+          state[key] = incoming[key]
       });
 
-      return nextState;
+      state.formStatus = 'draft';
     },
-    resetForm : (state, action)=>{
-      return initialState
-    }
+    resetForm: () => ({
+      ...defaultForm,
+      formStatus: 'draft',
+    }),
+    markFormSaved: (state) => {
+      state.formStatus = 'saved';
+    },
   },
 });
 
-export const { updateFormField, setForm, resetForm } = deviationSlice.actions;
+export const { updateFormField, setForm, resetForm, markFormSaved } =
+  deviationSlice.actions;
 export default deviationSlice.reducer;

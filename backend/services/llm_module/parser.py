@@ -8,115 +8,72 @@ class DeviationFormData(BaseModel):
         description=(
             "Very short status message confirming that the deviation form "
             "was created or updated. Do not include deviation details, "
-            "field values, reasoning, severity, root cause, or impact."
-        )
-    )
-
-    product_name: Optional[str] = Field(
-        default=None,
-        description=(
-            "Pharmaceutical product associated with the deviation. "
-            "Extract only when supported by the provided source. "
-            "Never invent, guess, or infer the product name."
-        )
-    )
-
-    batch_number: Optional[str] = Field(
-        default=None,
-        description=(
-            "Batch number affected by the deviation. Preserve exactly as "
-            "stated in the source. Never invent or modify the batch number."
+            "field values, reasoning, risk assessment, severity, or "
+            "suggested actions."
         )
     )
 
     site: Optional[str] = Field(
         default=None,
         description=(
-            "Manufacturing site or facility where the deviation occurred. "
-            "Return null when not reliably supported by the source."
+            "Site or plant where the deviation occurred. "
+            "Extract only when supported by the provided source. "
+            "Never invent or guess the site."
+        )
+    )
+
+    occurrence_date: Optional[str] = Field(
+        default=None,
+        description=(
+            "Date on which the deviation occurred. "
+            "Preserve the date as supported by the source. "
+            "Do not invent or infer a date."
         )
     )
 
     deviation_title: Optional[str] = Field(
         default=None,
         description=(
-            "Short factual title describing the documented deviation event. "
+            "Short factual title or description of the documented deviation. "
             "It may be generated from supported facts but must not introduce "
             "unsupported information."
         )
     )
 
-    deviation_type: Optional[str] = Field(
+    source: Optional[str] = Field(
         default=None,
         description=(
-            "Deviation category such as process, equipment, material, "
-            "documentation, or environmental deviation. Classification is "
-            "allowed when strongly supported by the documented event. "
-            "Do not invent facts while classifying the event."
+            "Source from which the deviation was identified or reported. "
+            "Extract only when supported by the provided source. "
+            "Do not invent or guess the source."
+        )
+    )
+
+    related_product_material: Optional[str] = Field(
+        default=None,
+        description=(
+            "Product or material related to the deviation. "
+            "Extract only when supported by the provided source. "
+            "Never invent, guess, or infer the product or material."
+        )
+    )
+
+    batch_lot_number: Optional[str] = Field(
+        default=None,
+        description=(
+            "Batch or lot number associated with the deviation. "
+            "Preserve exactly as stated in the source. "
+            "Never invent, modify, or infer the batch or lot number."
         )
     )
 
     description: Optional[str] = Field(
         default=None,
         description=(
-            "Concise factual description of the deviation, including the "
-            "actual condition and expected condition when available. "
-            "Preserve important measurements, ranges, dates, and durations. "
-            "Do not add information that is not supported by the source."
-        )
-    )
-
-    affected_area: Optional[str] = Field(
-        default=None,
-        description=(
-            "Process, department, equipment, system, or manufacturing area "
-            "affected by the deviation. Return null when not supported."
-        )
-    )
-
-    immediate_action: Optional[str] = Field(
-        default=None,
-        description=(
-            "Immediate action actually performed in response to the deviation. "
-            "Do not include proposed, recommended, or planned actions. "
-            "Do not invent actions."
-        )
-    )
-
-    root_cause: Optional[str] = Field(
-        default=None,
-        description=(
-            "Identified or suspected root cause when supported by the source. "
-            "Preserve uncertainty such as suspected, preliminary, or under "
-            "investigation. Never convert a suspected cause into a confirmed "
-            "cause and never invent a root cause."
-        )
-    )
-
-    # ============================================================
-    # AI-ASSESSED IMPACT AND SEVERITY
-    # ============================================================
-
-    quality_impact: Optional[str] = Field(
-        default=None,
-        description=(
-            "AI-generated assessment of the documented quality impact. "
-            "The LLM may synthesize or assess the impact from facts explicitly "
-            "supported by the provided source and current form state. "
-            "It must NOT invent contamination, safety risk, efficacy loss, "
-            "patient risk, regulatory impact, or other consequences without "
-            "supporting evidence. Clearly distinguish confirmed impact, "
-            "potential impact, no documented impact, and undetermined impact."
-        )
-    )
-
-    impact_summary: Optional[str] = Field(
-        default=None,
-        description=(
-            "AI-generated concise summary of the quality impact based only "
-            "on documented facts and supported assessment. It may synthesize "
-            "information but must not introduce unsupported risks, causes, "
-            "or consequences."
+            "Detailed factual description of what happened, where it "
+            "happened, when it happened, and how it was detected, based "
+            "only on the provided source. Preserve important measurements, "
+            "dates, ranges, and durations when available."
         )
     )
 
@@ -134,12 +91,33 @@ class DeviationFormData(BaseModel):
         )
     )
 
-    severity_reason: Optional[str] = Field(
+    risk_assessment: Optional[str] = Field(
         default=None,
         description=(
-            "AI-generated concise factual justification for the assigned "
-            "severity. It may synthesize the documented evidence into a "
-            "reasoned assessment, but must not introduce unsupported risks "
-            "or consequences. Must be null when severity is null."
+            "AI-generated assessment of the risk associated with the "
+            "documented deviation. Assess only from facts supported by "
+            "the provided source and current form state. Consider potential "
+            "impact to product quality, patient safety, compliance, process "
+            "control, or batch/material status when supported by evidence. "
+            "Clearly distinguish confirmed risk, potential risk, no "
+            "documented risk, and undetermined risk. Do not invent risks, "
+            "hazards, contamination, patient impact, regulatory impact, or "
+            "other consequences that are not supported by the available "
+            "information."
+        )
+    )
+
+    suggested_next_step: Optional[str] = Field(
+        default=None,
+        description=(
+            "AI-generated suggested next step based on the documented "
+            "deviation and available evidence. Suggestions should be "
+            "appropriate for further investigation, assessment, containment, "
+            "documentation, or review as applicable. Do not state that an "
+            "action has already been performed unless supported by the "
+            "source. Clearly frame this field as a suggested or recommended "
+            "next step, not a completed action. Do not invent specific "
+            "procedures, test results, approvals, or actions that are not "
+            "supported by the available information."
         )
     )

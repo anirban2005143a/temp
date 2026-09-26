@@ -1,19 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const defaultForm = {
-  product_name: '',
-  batch_number: '',
+  chat_response: '',
   site: '',
+  occurrence_date: '',
   deviation_title: '',
-  deviation_type: '',
+  source: '',
+  related_product_material: '',
+  batch_lot_number: '',
   description: '',
-  affected_area: '',
-  immediate_action: '',
-  root_cause: '',
-  quality_impact: '',
-  impact_summary: '',
   severity: '',
-  severity_reason: '',
+  risk_assessment: '',
+  suggested_next_step: '',
 };
 
 const initialState = { ...defaultForm };

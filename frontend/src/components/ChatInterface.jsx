@@ -54,7 +54,7 @@ export const ChatInterface = () => {
     const tempSelectedFile = selectedFile;
 
     setSelectedFile(null);
-    setQuery("")
+    setQuery("");
 
     dispatch(setisResponseGenerating(true));
 
@@ -92,10 +92,10 @@ export const ChatInterface = () => {
       const response = {
         chat_response: "form updated successfuly",
         product_name: "Paracetamol 500mg Tablets",
-        batch_number: "PCM2026B001",
+        batch_number: "",
         site: "Manufacturing Site - Unit 1",
         deviation_title: "Temperature Excursion During Storage",
-        deviation_type: "Environmental",
+        deviation_type: "Environmental deviation",
         description:
           "The storage temperature exceeded the specified limit during routine monitoring. The temperature was recorded at 28°C for approximately 45 minutes against the specified range of 20°C to 25°C.",
         affected_area: "Finished Goods Warehouse",
@@ -107,7 +107,7 @@ export const ChatInterface = () => {
           "Potential impact on product quality due to exposure to temperatures above the specified storage conditions.",
         impact_summary:
           "A total of 120 cartons from batch PCM2026B001 were potentially affected. Quality assessment and stability data review are required before disposition.",
-        severity: "Major",
+        severity: "High",
         severity_reason:
           "The deviation may have a potential impact on product quality, but the exposure was limited in duration and the affected batch has been placed on hold pending investigation.",
       };
@@ -163,43 +163,24 @@ export const ChatInterface = () => {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.06)]">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-lg border border-slate-200/80 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.06)]">
       <div className="flex shrink-0 items-center justify-between border-b border-slate-100 bg-white px-5 py-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
-            <Bot className="h-5 w-5" />
+          <div className=" h-10 w-10 items-center justify-center rounded-lg ">
+            <img src="/ai_icon.png" alt="ai_icon" />
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-slate-900">
-                AI Copilot
+              <h2 className="text-lg font-semibold text-slate-900">
+                AI Deviation Assistant 
               </h2>
 
-              <span
-                className={`h-2 w-2 rounded-full ${
-                  isResponseGenerating ? "bg-amber-400" : "bg-emerald-500"
-                }`}
-              />
             </div>
 
-            <p className="mt-0.5 text-xs text-slate-500">
-              {isResponseGenerating
-                ? "Generating response..."
-                : "Ready to assist with your deviation"}
-            </p>
           </div>
         </div>
 
-        <span
-          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${
-            isResponseGenerating
-              ? "bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200"
-              : "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200"
-          }`}
-        >
-          {isResponseGenerating ? "Running" : "Ready"}
-        </span>
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col bg-slate-50/70">
@@ -210,8 +191,8 @@ export const ChatInterface = () => {
           {chatMessages.length === 0 ? (
             <div className="flex h-full items-center justify-center">
               <div className="max-w-xs text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <Bot className="h-5 w-5" />
+                <div className="mx-auto mb-4 flex h-12 w-12 text-3xl items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                  ✦
                 </div>
 
                 <h3 className="text-sm font-semibold text-slate-800">
@@ -243,7 +224,7 @@ export const ChatInterface = () => {
                   >
                     {/* Avatar */}
                     <div
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                         isAssistant
                           ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200"
                           : "bg-blue-600 text-white shadow-sm"
@@ -263,14 +244,13 @@ export const ChatInterface = () => {
                         className={`mb-1 flex items-center gap-2 ${
                           isAssistant ? "justify-start" : "justify-end"
                         }`}
-                      >
-                      </div>
+                      ></div>
 
                       {/* Bubble */}
                       {isFile ? (
-                        <div className="min-w-[220px] rounded-2xl rounded-bl-md border border-blue-200/80 bg-blue-50 p-2.5 shadow-sm">
+                        <div className="min-w-[220px] rounded-lg border border-blue-200/80 bg-blue-50 p-2.5 shadow-sm">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm ring-1 ring-blue-100">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-blue-600 shadow-sm ring-1 ring-blue-100">
                               <FileText className="h-4.5 w-4.5" />
                             </div>
 
@@ -291,10 +271,10 @@ export const ChatInterface = () => {
                         </div>
                       ) : (
                         <div
-                          className={`rounded-2xl px-3.5 py-2.5 text-sm leading-6 shadow-sm ${
+                          className={`rounded-lg px-3.5 py-2.5 text-sm leading-6 shadow-sm ${
                             isAssistant
-                              ? "rounded-bl-md bg-white text-slate-700 ring-1 ring-slate-200/80"
-                              : "rounded-br-md bg-blue-600 text-white shadow-blue-600/10"
+                              ? "bg-white text-slate-700 ring-1 ring-slate-200/80"
+                              : "bg-blue-600 text-white shadow-blue-600/10"
                           }`}
                         >
                           <p className="whitespace-pre-wrap break-words">
@@ -316,7 +296,7 @@ export const ChatInterface = () => {
                   <Bot className="h-3.5 w-3.5" />
                 </div>
 
-                <div className="rounded-xl rounded-bl-md bg-white px-3.5 py-2.5 shadow-sm ring-1 ring-slate-200/80">
+                <div className="rounded-lg bg-white px-3.5 py-2.5 shadow-sm ring-1 ring-slate-200/80">
                   <LoaderCircle className="h-4 w-4 animate-spin text-blue-600" />
                 </div>
               </div>
@@ -326,7 +306,7 @@ export const ChatInterface = () => {
 
         <div className="shrink-0 border-t border-slate-200 bg-white p-3 sm:p-4">
           {selectedFile ? (
-            <div className="mb-3 flex items-center gap-3 rounded-xl border border-blue-100 bg-blue-50/70 px-3 py-2.5">
+            <div className="mb-3 flex items-center gap-3 rounded-lg border border-blue-100 bg-blue-50/70 px-3 py-2.5">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-blue-600 shadow-sm">
                 <FileText className="h-4 w-4" />
               </div>
@@ -349,7 +329,7 @@ export const ChatInterface = () => {
             </div>
           ) : null}
 
-          <div className="flex items-end gap-2 rounded-xl border border-slate-200 bg-slate-50 p-1.5 shadow-sm transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
+          <div className="flex items-end gap-2 rounded-lg border border-slate-200 bg-slate-50 p-1.5 shadow-sm transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
             <label
               className={`flex h-10 w-10 shrink-0  items-center justify-center rounded-lg text-slate-500 transition cursor-pointer hover:bg-slate-200 hover:text-slate-700`}
               aria-label="Add file"
@@ -370,8 +350,8 @@ export const ChatInterface = () => {
               value={query}
               onChange={handleQueryChange}
               onKeyDown={handleTextareaKeyDown}
-              placeholder="Ask the AI anything about this deviation..."
-              className="max-h-40 min-h-[40px] flex-1 resize-none overflow-y-auto bg-transparent px-1 py-2 text-sm leading-5 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Type a message ..."
+              className="max-h-40 min-h-[40px] flex-1 resize-none overflow-y-auto bg-transparent px-1 py-2 text-base leading-5 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50"
             />
 
             <button
@@ -380,7 +360,7 @@ export const ChatInterface = () => {
               disabled={
                 (!query.trim() && !selectedFile) || isResponseGenerating
               }
-              className="flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+              className="flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
             >
               <SendHorizontal className="h-4 w-4" />
             </button>

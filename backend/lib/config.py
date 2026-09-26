@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     huggingface_api_token: str | None = os.getenv("HUGGINGFACEHUB_API_TOKEN")
     model_name: str = os.getenv(
         "MODEL_NAME",
-        "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "meta-llama/Llama-3.1-8B-Instruct",
     )
     model_invoke_delay_sec: int = int(
         os.getenv("MODEL_INVOKE_DELAY_SEC", "20")

@@ -21,7 +21,8 @@ export const submitDeviationQuery = async ({ query, file, currentForm }) => {
   }
 
   if (currentForm) {
-    formData.append("current_form", JSON.stringify(currentForm));
+    const { chat_response, ...safeCurrentForm } = currentForm;
+    formData.append("current_form", JSON.stringify(safeCurrentForm));
   }
 
   const response = await apiClient.post("/api/submit-query", formData, {
@@ -34,11 +35,6 @@ export const submitDeviationQuery = async ({ query, file, currentForm }) => {
 };
 
 export const saveDeviationToDatabase = async (payload) => {
-  // await new Promise((res , rej)=>{
-  //   setTimeout(() => {
-  //     res(4)
-  //   }, 5000);
-  // })
   const response = await apiClient.post("/api/deviation/save", payload);
   return response.data;
 };

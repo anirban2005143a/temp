@@ -12,7 +12,7 @@ process_query_router = APIRouter()
 
 
 @process_query_router.post("/submit-query")
-async def upload_deviation(
+async def upload_deviation_query(
     file: UploadFile | None = File(default=None),
     query: str | None = Form(default=None),
     current_form: str | None = Form(default=None),
@@ -79,26 +79,31 @@ async def upload_deviation(
             "[API] calling LLM module | query_len=%s | file_content_len=%s | current_form_present=%s"
             % (len(query), len(file_content), bool(current_form_data))
         )
-        # final_response = LLM_Module().invoke_structured_model(
-        #     file_content=file_content,
-        #     query=query,
-        #     current_form=current_form_data,
-        # )
 
-        final_response = {
-            "chat_response": "Deviation form updated successfully.",
-            # "site": None,
-            "site": "Manufacturing Site - Unit 1",
-            "occurrence_date": "2026-09-26",
-            "deviation_title": "Temperature Excursion During Storage",
-            "source": "Production",
-            "related_product_material": "Paracetamol 500mg Tablets",
-            "batch_lot_number": "PCM2026B001",
-            "description": "The storage temperature exceeded the specified limit during routine monitoring. The temperature was recorded at 28°C for approximately 45 minutes against the specified range of 20°C to 25°C.",
-            "severity": "High",
-            "risk_assessment": "Potential risk to product quality due to elevated storage temperature, but the exposure duration was limited and the affected material has been placed on hold pending review.",
-            "suggested_next_step": "Review the warehouse temperature records and perform a quality impact assessment before release disposition.",
-        }
+        print("query : ", query)
+        print("current form : ", current_form_data)
+
+
+        final_response = LLM_Module().invoke_structured_model(
+            file_content=file_content,
+            query=query,
+            current_form=current_form_data,
+        )
+
+        # final_response = {
+        #     "chat_response": "Deviation form updated successfully.",
+        #     # "site": None,
+        #     "site": "Manufacturing Site - Unit 1",
+        #     "occurrence_date": "2026-09-26",
+        #     "deviation_title": "Temperature Excursion During Storage",
+        #     "source": "Production",
+        #     "related_product_material": "Paracetamol 500mg Tablets",
+        #     "batch_lot_number": "PCM2026B001",
+        #     "description": "The storage temperature exceeded the specified limit during routine monitoring. The temperature was recorded at 28°C for approximately 45 minutes against the specified range of 20°C to 25°C.",
+        #     "severity": "High",
+        #     "risk_assessment": "Potential risk to product quality due to elevated storage temperature, but the exposure duration was limited and the affected material has been placed on hold pending review.",
+        #     "suggested_next_step": "Review the warehouse temperature records and perform a quality impact assessment before release disposition.",
+        # }
 
         print("[API] AI response completed successfully")
         return final_response

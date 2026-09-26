@@ -22,6 +22,7 @@ export const ChatInterface = () => {
   const [query, setQuery] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const chatContainerRef = useRef(null);
+  const textareaRef = useRef(null);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -32,10 +33,19 @@ export const ChatInterface = () => {
     }
   }, [chatMessages, isResponseGenerating]);
 
+  useEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+  }, [query]);
+
   const handleQueryChange = (event) => {
     setQuery(event.target.value);
-    event.target.style.height = "auto";
-    event.target.style.height = `${Math.min(event.target.scrollHeight, 160)}px`;
   };
 
   const handleTextareaKeyDown = (event) => {
@@ -83,6 +93,7 @@ export const ChatInterface = () => {
     }
 
     try {
+
       const response = await submitDeviationQuery({
         query: trimmedQuery,
         file: tempSelectedFile,
@@ -157,7 +168,7 @@ export const ChatInterface = () => {
       <div className="flex min-h-0 flex-1 flex-col bg-slate-50/70">
         <div
           ref={chatContainerRef}
-          className="flex-1 space-y-4 overflow-y-auto px-4 py-5 sm:px-5"
+          className="flex-1 space-y-4 overflow-y-auto py-5 px-2"
         >
           {chatMessages.length === 0 ? (
             <div className="flex h-full items-center justify-center">
@@ -209,7 +220,7 @@ export const ChatInterface = () => {
                     </div>
 
                     {/* Message content */}
-                    <div className="min-w-0">
+                    <div className="w-[80%] ">
                       {/* Sender */}
                       <div
                         className={`mb-1 flex items-center gap-2 ${
@@ -317,6 +328,7 @@ export const ChatInterface = () => {
             </label>
 
             <textarea
+              ref={textareaRef}
               rows="1"
               value={query}
               onChange={handleQueryChange}

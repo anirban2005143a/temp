@@ -2,6 +2,7 @@ import json
 import time
 
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from langchain_groq import ChatGroq
 from langchain_core.messages import BaseMessage
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_classic.output_parsers import OutputFixingParser
@@ -14,14 +15,27 @@ from services.llm_module.prompts import PARSE_TEXT_PROMPT
 
 class LLM_Module:
     def __init__(self):
-        print("[LLM] initializing model | model_name=%s" % settings.model_name)
+        if not settings.groq_api_key:
+            raise ValueError(
+                "GROQ_API_KEY is not configured. Set it in your environment before starting the backend."
+            )
+
+        print("[LLM] initializing Groq model | model_name=%s" % settings.groq_model_name)
+
+        # Hugging Face implementation kept for reference / rollback.
         llm = HuggingFaceEndpoint(
-            repo_id=settings.model_name,
+            repo_id=settings.huggingface_model_name,
             huggingfacehub_api_token=settings.huggingface_api_token,
             temperature=0.1,
         )
         self.model = ChatHuggingFace(llm=llm)
-        print("[LLM] model initialized")
+
+        # self.model = ChatGroq(
+        #     model=settings.groq_model_name,
+        #     api_key= settings.groq_api_key,
+        #     temperature=0.1,
+        # )
+        print("[LLM] Groq model initialized")
 
     def invoke(self, query: str | list[BaseMessage]) -> str:
         if not query:
